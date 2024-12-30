@@ -55,7 +55,7 @@ class AnimationApp:
         def show_bubble():
             self.canvas.itemconfig(self.bubble_image, state="normal")  # Show speech bubble
             self.canvas.itemconfig(self.bubble_text, state="normal")  # Show text
-            self.root.after(5000, hide_bubble)  # Wait 5 seconds before hiding the bubble
+            self.root.after(3000, hide_bubble)  # Wait 5 seconds before hiding the bubble
 
         def hide_bubble():
             self.canvas.itemconfig(self.bubble_image, state="hidden")  # Hide speech bubble
@@ -72,8 +72,7 @@ class AnimationApp:
             slide_out(self.root.winfo_screenwidth() // 2)  # Start the right movement from the center
 
         move_left_to_center(-200)  # Start the slide from left
-        self.root.after(3500, show_bubble)  # Show speech bubble after 2.5 seconds
-
+        self.root.after(3000, show_bubble)  # Show speech bubble after 2.5 seconds
 
 if __name__ == "__main__":
     root = tk.Tk()
