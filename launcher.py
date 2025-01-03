@@ -1,12 +1,8 @@
 import tkinter as tk
-import subprocess
 import os
 import utils
 app = tk.Tk()
-x = tk.IntVar()
-y = tk.IntVar()
-utils.load_votes(x, y)
-app.title(f"Launcher de Proiecte | Calin Georgescu: {x.get()} | Elena Lasconi: {y.get()}")
+app.title(f"Launcher de Proiecte")
 app.geometry("600x400")
 app.minsize(600, 400)
 subfolder_path1 = os.path.join(os.path.dirname(__file__), "vote_app")
