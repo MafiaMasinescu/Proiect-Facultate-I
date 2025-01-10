@@ -1,8 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
 from PIL import Image, ImageTk  # For working with images
-import subprocess
-import json
 import os
 import utils
 
@@ -74,5 +71,4 @@ if not utils.can_vote(utils.hwid_code):
 utils.color_cycle(root , cnt_label1, cul_G, [0])
 utils.color_cycle(root , cnt_label2, cul_L, [0])
 
-# Start the main event loop
 root.mainloop()

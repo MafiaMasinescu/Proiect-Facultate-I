@@ -1,7 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 import subprocess
-import json
 import os
 from pymongo.mongo_client import MongoClient
 

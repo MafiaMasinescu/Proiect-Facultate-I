@@ -2,7 +2,6 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import os
 
-
 class AnimationApp:
     def __init__(self, root):
         self.root = root
@@ -16,9 +15,7 @@ class AnimationApp:
         # Set the window background to gray
         self.root.config(bg="gray")
         
-        # Load and resize images using Pillow
         dir_path = os.path.join(os.path.dirname(__file__))
-        # Load and resize main image
         original_main_image = Image.open(os.path.join(dir_path , "simion_sosoaca.png"))
         resized_main_image = original_main_image.resize((500, 500), Image.Resampling.LANCZOS)  # Resize to 300x300 pixels
         self.main_png = ImageTk.PhotoImage(resized_main_image)
