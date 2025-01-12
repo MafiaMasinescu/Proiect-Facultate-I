@@ -9,23 +9,17 @@ import sys
 class DownloadProgress(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
-        self.title("Downloading...")
-        
-        # Configure the window
+        self.title("Downloading...")        
         window_width = 350
         window_height = 175
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         x = (screen_width - window_width) // 2
         y = (screen_height - window_height) // 2
-        self.geometry(f"{window_width}x{window_height}+{x}+{y}")
-        
-        # Make window non-resizable and always on top
+        self.geometry(f"{window_width}x{window_height}+{x}+{y}")        
         self.resizable(False, False)
         self.transient(parent)
-        self.grab_set()
-        
-        # Create and pack widgets
+        self.grab_set()        
         self.status_text = tk.Text(self, height=6, width=45, wrap=tk.WORD)
         self.status_text.pack(pady=10)
         self.status_text.config(state=tk.DISABLED)
@@ -36,9 +30,7 @@ class DownloadProgress(tk.Toplevel):
             length=500,
             mode="determinate"
         )
-        self.progress_bar.pack(pady=10)
-        
-        # Start progress bar animation
+        self.progress_bar.pack(pady=10)        
         self.progress_bar.start(5)
         
         # Queue for thread-safe communication
@@ -46,11 +38,9 @@ class DownloadProgress(tk.Toplevel):
         self.check_queue()
     
     def update_status(self, message):
-        """Add new status message to queue"""
         self.message_queue.put(message)
     
     def check_queue(self):
-        """Check for new messages in queue and update status text"""
         try:
             while True:
                 message = self.message_queue.get_nowait()
@@ -64,7 +54,6 @@ class DownloadProgress(tk.Toplevel):
             self.after(100, self.check_queue)
     
     def finish(self):
-        """Stop progress bar and close window"""
         self.progress_bar.stop()
         self.destroy()
 
@@ -78,7 +67,7 @@ def select_button_gen(frame, text, command, x, y):
         fg="blue",
         bg="#FF6496"
         )
-    button.place(x=x, y=y, anchor="center" , width=200 , height=60)  # Use absolute positioning within the canvas
+    button.place(x=x, y=y, anchor="center" , width=200 , height=60)
     return button
 
 def update_frame(app , content_function):
@@ -102,7 +91,6 @@ class AppSection:
         return os.path.join(base_path, self.folder_name)
     
     def create_section(self):
-        # Add title and description
         self.app.right_frame.title = tk.Label(self.app.right_frame, text=self.title, font=("Arial", 24, "bold"))
         self.app.right_frame.title.pack()
         self.app.right_frame.description = tk.Label(
@@ -110,23 +98,24 @@ class AppSection:
         )
         self.app.right_frame.description.pack()
 
-        # Check folder and add appropriate button
         if self.check_folder():
             self.add_launch_button()
         else:
             self.add_download_button()
     
     def check_folder(self):
-        """Check if the folder exists."""
         return os.path.exists(self.subfolder_path)
 
     def add_launch_button(self):
+        window_title = self.app.winfo_toplevel().title()
+        username = window_title.replace("Launcher de Proiecte - ", "") if " - " in window_title else ""
+        #e ca sa trimiti usernameu mai departe unde va fi nevoie de conturi
         launch_button = tk.Button(
             self.app.right_frame,
             text="Launch",
             font=("Arial", 16, "bold"),
             command=lambda: subprocess.Popen(
-                ["python", f"{self.folder_name}.py"],
+                ["python", f"{self.folder_name}.py" , username],
                 cwd=self.subfolder_path,
                 creationflags=subprocess.CREATE_NO_WINDOW
             )
@@ -147,9 +136,7 @@ class AppSection:
         self.app.right_frame.download_button.config(state="disabled", text="Downloading...")
 
         def download_and_switch():
-            # Simulate downloading folder (replace with actual function)
             download_folder_from_github(self.folder_name, self.app)
-
             # Update UI after download
             self.app.after(0, lambda: self.app.right_frame.download_button.pack_forget())
             self.add_launch_button()
@@ -164,6 +151,10 @@ def vote_app_content(app):
 def pacanea_radu_content(app):
     pacanea_radu = AppSection(app , folder_name="pacanea_radu", title="Pacanea Radu", description="\n\n\n\n\n Joc de noroc realizat in python (pacanea)")
     pacanea_radu.create_section()
+
+def stocks_app_content(app):
+    stocks_app_content = AppSection(app , folder_name="stocks_app" , title="Stocks Graphs", description="\n\n\n\n\nAplicatie pentru vizualizarea stockurilor sub forma de grafic")
+    stocks_app_content.create_section()
 
 def check_library(library_name):
     result = subprocess.run(["pip", "show", library_name], creationflags=subprocess.CREATE_NO_WINDOW , stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -181,59 +172,49 @@ def check_folder(folder):
         return False
     
 def check_libraries_from_file(file_path):
-    # Open the file and read the library names line by line
     with open(file_path, 'r') as file:
         libraries = file.readlines()
-    # Remove any extra whitespace or newline characters
     libraries = [lib.strip() for lib in libraries if lib.strip()]    
-    # Iterate through the libraries and check each one
     for library in libraries:
         check_library(library)
     
 def download_folder_from_github(local_folder, parent_window):
-    # Create progress window
     progress_window = DownloadProgress(parent_window)
-    #check_library("requests")
     if check_library("requests"):
         progress_window.update_status("Library requests is installed")
     else:
         progress_window.update_status("Library requests is not installed")
-        progress_window.update_status("Donwloading library requests")
+        progress_window.update_status("Downloading library requests")
     import requests
+
     def perform_download():
-        #import shutil
         api_url = "https://github.com/MafiaMasinescu/Proiect-Facultate-I/archive/refs/heads/main.zip"
-        #face fite daca nu adaug chestia asta cand testez in py sau cand folosesc exeul
+
         if getattr(sys, 'frozen', False):  # If running as a PyInstaller bundle
-            base_folder = os.path.dirname(sys.executable)
+            base_folder = os.path.dirname(sys.argv[0])
         else:  # If running as a Python script
             base_folder = os.path.dirname(os.path.abspath(__file__))
 
+        progress_window.update_status(f"Base folder resolved to: {base_folder}")
         progress_window.update_status("Starting download...")
         response = requests.get(api_url)
-
         if response.status_code == 200:
             # Save the content to a local file
             zip_filename = os.path.join(base_folder, "Proiect-Facultate-I-main.zip")
             with open(zip_filename, "wb") as file:
                 file.write(response.content)
             progress_window.update_status("Download completed successfully.")
-
             extract_folder = os.path.join(base_folder, "Proiect-Facultate-I-main")
             progress_window.update_status("Extracting files...")
             with zipfile.ZipFile(zip_filename, 'r') as zip_ref:
                 zip_ref.extractall(base_folder)
             progress_window.update_status(f"Extraction completed. Files extracted to '{extract_folder}'.")
-
-            # Remove the ZIP file
             os.remove(zip_filename)
             progress_window.update_status(f"Removed the ZIP file: {zip_filename}")
-
-            # Move the folder
             progress_window.update_status("Moving files to final location...")
             move_process = subprocess.Popen(
                 ["cmd", "/c", "move",
-                 os.path.join(extract_folder, f"{local_folder}"),
+                 os.path.join(extract_folder, local_folder),
                  base_folder],
                 cwd=base_folder,
                 creationflags=subprocess.CREATE_NO_WINDOW
@@ -244,17 +225,10 @@ def download_folder_from_github(local_folder, parent_window):
             if move_process.returncode == 0:
                 shutil.rmtree(extract_folder)
             progress_window.update_status("Files moved successfully. Cleanup complete.")
-
-            # Close progress window after a short delay
             parent_window.after(1500, progress_window.finish)
         else:
             progress_window.update_status(f"Failed to download. Status code: {response.status_code}")
             parent_window.after(1500, progress_window.finish)
 
-    # Start the download thread
     download_thread = threading.Thread(target=perform_download)
     download_thread.start()
-
-
-
-
