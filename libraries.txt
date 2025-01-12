@@ -1,3 +1,5 @@
 pillow
 pymongodb
 matplotlib
+python-dateutil
+tiingo
