@@ -1,8 +1,16 @@
-Proiect pentru facultate anul 1.
+## Proiect pentru facultate anul 1
 
-Contine o pagina de login legata la un database in MongoDB unde sunt salvate conturile . Dupa ce utilizatorul se logheaza/inregistreaza va avea acces la launcherul de proiecte.
-Proiecte continute : - Aplicatie pentru votat intre Georgescu si Lasconi facuta in memoria fiascoului cu turul 2 . Voturile sunt salvate tot pe MongoDB fiecare cont avand dreptul la un singur vot
-                     -Aplicatie cu jocuri de noroc(pacanea) realizata de colegul meu.
-                     -Aplicatie pentru vizualizarea evolutiei stocurilor selectate sub forma de grafice (contine buguri , nu este terminata aplicatia)
+Proiectul conține o pagină de login legată la un database în MongoDB unde sunt salvate conturile. 
+După ce utilizatorul se loghează/înregistrează, va avea acces la launcherul de proiecte.
 
- Link de download : https://drive.google.com/file/d/1xeJG5F_mq7H1hsXn2aJJdR8xqe5qhBb8/view?usp=sharing
+### Proiecte conținute:
+- **Aplicație pentru votat între Georgescu și Lasconi**, făcută în memoria fiascoului cu turul 2.  
+  Voturile sunt salvate tot pe MongoDB, fiecare cont având dreptul la un singur vot.  
+
+- **Aplicație cu jocuri de noroc (păcănea)**, realizată de colegul meu.  
+
+- **Aplicație pentru vizualizarea evoluției stocurilor** selectate sub formă de grafice  
+  *(conține buguri, nu este terminată aplicația).*  
+
+### Link de download:
+[Download Proiect](https://drive.google.com/file/d/1xeJG5F_mq7H1hsXn2aJJdR8xqe5qhBb8/view?usp=sharing)
